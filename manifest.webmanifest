@@ -1,10 +1,10 @@
 {
-  "name": "Flashcards NBC TSP Azul",
-  "short_name": "NBC Azul",
+  "name": "Flashcards NBC TSP Creme",
+  "short_name": "NBC Creme",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#004080",
-  "theme_color": "#004080",
+  "background_color": "#fdf5e6",
+  "theme_color": "#fdf5e6",
   "icons": [
     {
       "src": "icons/icon-192.png",

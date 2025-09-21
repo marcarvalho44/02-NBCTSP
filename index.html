@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Flashcards NBC TSP Azul</title>
+  <title>Flashcards NBC TSP Creme</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#004080">
+  <meta name="theme-color" content="#fdf5e6">
   <style>
     body { font-family: Arial; background:#f0f2f5; margin:0 }
-    header {background:#004080;color:white;text-align:center;padding:15px}
+    header {background:#333;color:white;text-align:center;padding:15px}
     .controls {margin:10px;text-align:center}
-    button,select{padding:8px 14px;margin:5px;background:#004080;color:#fff;border:none;border-radius:5px;cursor:pointer}
-    button:hover{background:#0059b3}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;padding:20px}
+    button,select{padding:8px 14px;margin:5px;background:#333;color:#fff;border:none;border-radius:5px;cursor:pointer}
+    button:hover{background:#555}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:20px}
     .card{perspective:1000px}
-    .inner{position:relative;width:100%;padding-top:65%;transition:transform .8s;transform-style:preserve-3d;cursor:pointer}
+    .inner{position:relative;width:100%;padding-top:70%;transition:transform .8s;transform-style:preserve-3d;cursor:pointer}
     .card.flipped .inner{transform:rotateY(180deg)}
     .front,.back{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:12px;display:flex;align-items:center;justify-content:center;
-      text-align:center;color:#fff;padding:10px;backface-visibility:hidden;background:#004080;box-shadow:0 4px 10px rgba(0,0,0,.3)}
-    .back{background:#0066cc;transform:rotateY(180deg)}
+      text-align:center;color:#000;padding:14px;backface-visibility:hidden;background:#fdf5e6;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+    .back{background:#fff8dc;transform:rotateY(180deg)}
+    .front{font-weight:bold}
   </style>
 </head>
 <body>
@@ -36,38 +37,38 @@
 <div class="grid" id="grid"></div>
 <script>
 const data=[
-{q:"O que define um ativo intangível?",a:"Ativo não monetário identificável, sem substância física, que gera benefícios futuros ou serviço esperado.",t:"intangivel"},
-{q:"Quais custos são atribuíveis a um intangível?",a:"Salários, honorários, testes, impostos de aquisição, custos para uso.",t:"intangivel"},
-{q:"Quando um ativo intangível deve ser reconhecido?",a:"Quando for provável benefício futuro e custo mensurável.",t:"intangivel"},
-{q:"Vida útil definida x indefinida (intangível)?",a:"Definida=amortiza; indefinida=não amortiza, revisa.",t:"intangivel"},
-{q:"Mensuração após reconhecimento intangível?",a:"Modelo de custo ou reavaliação.",t:"intangivel"},
-{q:"Pesquisa x desenvolvimento?",a:"Pesquisa=despesa; desenvolvimento=ativo se atender critérios.",t:"intangivel"},
-{q:"Exemplos de despesas fora do intangível?",a:"Propaganda, treinamento, administração.",t:"intangivel"},
-{q:"Quando dar baixa em intangível?",a:"Na alienação ou quando não gera benefícios.",t:"intangivel"},
-{q:"O que divulgar sobre intangível?",a:"Vida útil, método, valor residual, valor contábil.",t:"intangivel"},
-{q:"Teste de impairment intangível?",a:"Anualmente ou se houver indícios de perda.",t:"intangivel"},
+{q:"O que define um ativo intangível?",a:"NBC TSP 08, item 16: ativo não monetário identificável, sem substância física, controlado pela entidade e capaz de gerar benefícios econômicos futuros ou potencial de serviços.",t:"intangivel"},
+{q:"Quais custos são atribuíveis a um ativo intangível?",a:"NBC TSP 08, item 28: salários, honorários, custos de testes, impostos de aquisição e outros diretamente necessários para colocá-lo em condições de uso.",t:"intangivel"},
+{q:"Quando reconhecer um ativo intangível?",a:"NBC TSP 08, item 21: deve ser reconhecido quando for provável que benefícios futuros fluam e o custo possa ser mensurado de forma confiável.",t:"intangivel"},
+{q:"Vida útil definida x indefinida (intangível)?",a:"NBC TSP 08, itens 88-90: definida = amortização sistemática; indefinida = não amortiza, mas testa impairment anualmente.",t:"intangivel"},
+{q:"Mensuração após reconhecimento do intangível?",a:"NBC TSP 08, item 72: escolha entre modelo do custo (custo - amortização - perdas) ou reavaliação (valor justo).",t:"intangivel"},
+{q:"Gastos de pesquisa x desenvolvimento?",a:"NBC TSP 08, itens 54-64: pesquisa sempre despesa; desenvolvimento pode ser ativado se atender critérios como viabilidade técnica e expectativa de benefícios.",t:"intangivel"},
+{q:"Exemplos de despesas que não entram no intangível?",a:"NBC TSP 08, item 69: propaganda, treinamento, custos administrativos gerais.",t:"intangivel"},
+{q:"Quando dar baixa em ativo intangível?",a:"NBC TSP 08, item 112: na alienação ou quando não houver expectativa de benefícios ou serviços futuros.",t:"intangivel"},
+{q:"O que divulgar sobre ativo intangível?",a:"NBC TSP 08, item 118: vida útil, método, valor residual, valor contábil, políticas de amortização, reavaliações.",t:"intangivel"},
+{q:"Teste de impairment em intangível?",a:"NBC TSP 08, item 94: ativos de vida indefinida ou não disponíveis para uso devem ser testados anualmente ou se houver indícios de perda.",t:"intangivel"},
 
-{q:"Objetivo da NBC TSP 07?",a:"Tratar reconhecimento, mensuração, depreciação, baixa, divulgação do imobilizado.",t:"imobilizado"},
-{q:"Mensurar custo inicial imobilizado?",a:"Preço compra+tributos+transporte+instalação+testes.",t:"imobilizado"},
-{q:"O que é depreciação?",a:"Alocação sistemática do valor depreciável.",t:"imobilizado"},
-{q:"Valor residual na depreciação?",a:"Considerado; se irrelevante, zero.",t:"imobilizado"},
-{q:"Quando revisar vida útil imobilizado?",a:"Quando houver mudança expectativa de uso/obsolescência.",t:"imobilizado"},
-{q:"Reconhecer perda por recuperável?",a:"Comparar valor em uso/justo; perda se contábil>recuperável.",t:"imobilizado"},
-{q:"Valor contábil após reconhecimento?",a:"Custo - depreciação acumulada - perdas.",t:"imobilizado"},
-{q:"Baixa do imobilizado?",a:"Alienado, perdido ou sem benefício futuro.",t:"imobilizado"},
-{q:"Divulgação imobilizado?",a:"Classes, métodos, valores, políticas.",t:"imobilizado"},
-{q:"Métodos de depreciação?",a:"Linear, por uso, unidades produção.",t:"imobilizado"},
+{q:"Objetivo da NBC TSP 07?",a:"NBC TSP 07, item 1: estabelecer critérios de reconhecimento, mensuração, depreciação, baixa e divulgação do ativo imobilizado.",t:"imobilizado"},
+{q:"Como mensurar custo inicial do imobilizado?",a:"NBC TSP 07, item 26: preço de compra, tributos não recuperáveis, transporte, instalação, testes iniciais necessários ao funcionamento.",t:"imobilizado"},
+{q:"O que é depreciação?",a:"NBC TSP 07, item 58: alocação sistemática do valor depreciável ao longo da vida útil do ativo.",t:"imobilizado"},
+{q:"Valor residual no cálculo da depreciação?",a:"NBC TSP 07, item 61: considerar valor residual; se insignificante, pode ser considerado zero.",t:"imobilizado"},
+{q:"Quando revisar a vida útil do imobilizado?",a:"NBC TSP 07, item 70: deve ser revista quando houver mudanças nas expectativas de uso, obsolescência ou manutenção.",t:"imobilizado"},
+{q:"Como reconhecer perda por valor recuperável?",a:"NBC TSP 07 remete à NBC TSP 09/10: comparar valor contábil com valor recuperável (uso ou justo). Registrar perda se contábil > recuperável.",t:"imobilizado"},
+{q:"Valor contábil após reconhecimento?",a:"NBC TSP 07, item 43: custo inicial menos depreciação acumulada menos perdas por desvalorização.",t:"imobilizado"},
+{q:"Quando dar baixa no imobilizado?",a:"NBC TSP 07, item 83: na alienação, perda ou quando não há expectativa de benefício futuro.",t:"imobilizado"},
+{q:"O que divulgar sobre imobilizado?",a:"NBC TSP 07, item 90: classes, métodos de depreciação, valores contábeis, políticas contábeis, reavaliações.",t:"imobilizado"},
+{q:"Métodos de depreciação aceitos?",a:"NBC TSP 07, item 60: método deve refletir padrão de consumo de benefícios (linear, unidades produzidas, horas de uso).",t:"imobilizado"},
 
-{q:"Objetivo da NBC TSP 34?",a:"Implementar sistema de custos no setor público.",t:"custos"},
-{q:"Que norma foi revogada pela NBC TSP 34?",a:"A NBC T 16.11.",t:"custos"},
-{q:"Alcance da NBC TSP 34?",a:"Aplica-se a todas entidades do setor público.",t:"custos"},
-{q:"Custo direto x indireto?",a:"Direto=identificável; Indireto=rateio.",t:"custos"},
-{q:"Centros de responsabilidade?",a:"Unidades com gestores que respondem por custos.",t:"custos"},
-{q:"O que é objeto de custo?",a:"Unidade para mensurar custos (bem/serviço).",t:"custos"},
-{q:"Custos fixos x variáveis?",a:"Fixos não variam; variáveis sim.",t:"custos"},
-{q:"Custos controláveis?",a:"Gestor pode influenciar.",t:"custos"},
-{q:"Métodos de custeio?",a:"Direto, absorção parcial/integral.",t:"custos"},
-{q:"Importância info de custos?",a:"Planejamento, decisão, eficiência, transparência.",t:"custos"}
+{q:"Objetivo da NBC TSP 34?",a:"NBC TSP 34, item 1: estabelecer princípios para mensuração e evidenciação dos custos no setor público, visando eficiência e transparência.",t:"custos"},
+{q:"Que norma foi revogada pela NBC TSP 34?",a:"NBC TSP 34, introdução: revoga a NBC T 16.11 a partir de 2024.",t:"custos"},
+{q:"Qual o alcance da NBC TSP 34?",a:"NBC TSP 34, item 3: aplicável a todas entidades do setor público, inclusive administração direta e indireta.",t:"custos"},
+{q:"Custo direto x indireto?",a:"NBC TSP 34, item 18: direto = identificável objetivamente; indireto = rateado com base em direcionadores.",t:"custos"},
+{q:"Centros de responsabilidade?",a:"NBC TSP 34, item 23: unidades definidas que conduzem atividades e cujos gestores respondem pelos custos.",t:"custos"},
+{q:"O que é objeto de custo?",a:"NBC TSP 34, item 19: bem, serviço ou atividade para a qual se deseja identificar e mensurar custos.",t:"custos"},
+{q:"Custos fixos x variáveis?",a:"NBC TSP 34, item 20: fixos = não variam com volume no curto prazo; variáveis = proporcionais ao nível de atividade.",t:"custos"},
+{q:"Custos controláveis?",a:"NBC TSP 34, item 22: custos que o gestor pode influenciar diretamente.",t:"custos"},
+{q:"Métodos de custeio?",a:"NBC TSP 34, itens 30-34: custeio direto, custeio por absorção (integral, parcial, pleno).",t:"custos"},
+{q:"Importância da informação de custos?",a:"NBC TSP 34, item 2: subsidia planejamento, decisão, eficiência, transparência e prestação de contas.",t:"custos"}
 ];
 let currentData=[...data];
 function shuffle(){for(let i=currentData.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[currentData[i],currentData[j]]=[currentData[j],currentData[i]];}render();}
